@@ -1,0 +1,12 @@
+httpaddress: :8080
+timezone: Asia/Jakarta
+debug: true
+
+dbconfig:
+  host: localhost
+  port: 5432
+  name: db_schedule_app
+  user: postgres
+  password: 123456
+  applicationname: latihan
+  logging: true
