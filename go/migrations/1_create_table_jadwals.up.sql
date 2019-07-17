@@ -20,11 +20,11 @@ TABLESPACE pg_default;
 ALTER TABLE public.jadwals
     OWNER to postgres;
 
--- Index: idx_jadwals_deleted_at
+-- Index: idx_jadwals_id
 
--- DROP INDEX public.idx_jadwals_deleted_at;
+-- DROP INDEX public.idx_jadwals_id;
 
-CREATE INDEX idx_jadwals_deleted_at
+CREATE INDEX idx_jadwals_id
     ON public.jadwals USING btree
-    (deleted_at)
+    (id)
     TABLESPACE pg_default;
