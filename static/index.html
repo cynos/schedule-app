@@ -2,13 +2,15 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>schedult management</title>
     <link href="./assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="./assets/css/dataTables.min.css" rel="stylesheet">
 
     <script src="./assets/js/jquery-3.3.1.min.js" charset="utf-8"></script>
     <script src="./assets/js/bootstrap.bundle.min.js" charset="utf-8"></script>
     <script src="./assets/js/dataTables.min.js" charset="utf-8"></script>
+    <script src="./assets/js/js-cookies.js" charset="utf-8"></script>
+
   </head>
   <body>
     <div class="container">
@@ -22,6 +24,7 @@
               <div class="row">
                 <div class="col">
                   <a href="#" class="btn btn-success" data-mode="tambah" data-toggle="modal", data-target="#modal">Tambah Jadwal</a>
+                  <a href="#" class="btn btn-danger" onclick="logout()">Logout</a>
                 </div>
                 <div class="w-100 my-2"></div>
                 <div class="col">
@@ -109,6 +112,25 @@
   </body>
   <script type="text/javascript">
     var base_url = "http://localhost:8080";
+
+    (function(){
+      if (Cookies.get("login") == null) {
+        window.location.href = base_url+"/static/login.html"
+      }
+    })();
+
+    function logout(){
+      Cookies.remove('login')
+      $.post({
+        url: base_url+"/logout",
+        success: function(res){
+          if (res) {
+            Cookies.remove('token')
+            location.reload(true)
+          }
+        }
+      })
+    }
 
     $(document).ready(function() {
       var table = $('#table').DataTable( {

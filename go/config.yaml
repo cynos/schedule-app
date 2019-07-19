@@ -1,5 +1,6 @@
 httpaddress: :8080
 timezone: Asia/Jakarta
+signaturekey: jwttoken
 debug: true
 
 dbconfig:

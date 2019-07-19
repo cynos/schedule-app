@@ -1,6 +1,10 @@
 # schedule-app
 
 using module :
+- "github.com/dgrijalva/jwt-go"
+- "github.com/golang-migrate/migrate/v4"
+- "github.com/golang-migrate/migrate/v4/database/postgres"
+- "github.com/golang-migrate/migrate/v4/source/file"
 - "github.com/gin-gonic/gin"
 - "github.com/jinzhu/gorm"
 - "github.com/jinzhu/gorm/dialects/postgres"

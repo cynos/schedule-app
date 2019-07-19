@@ -8,11 +8,12 @@ import (
 
 type Cfg struct {
   DBConfig
-  DBInstance  *gorm.DB
-  Timezone    string     `env:"TIMEZONE" required:"true"`
-  HttpAddress string     `env:"HTTP_ADDRESS"`
-  Debug       bool       `required:"true" default:"false"`
-  Log         *zap.Logger
+  DBInstance    *gorm.DB
+  SignatureKey  string
+  Timezone      string     `env:"TIMEZONE" required:"true"`
+  HttpAddress   string     `env:"HTTP_ADDRESS"`
+  Debug         bool       `required:"true" default:"false"`
+  Log           *zap.Logger
 }
 
 func (c *Cfg) init() {

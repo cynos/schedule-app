@@ -10,6 +10,20 @@ import (
   _ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
+type logins struct{
+  gorm.Model
+  Name     string
+  Username string
+  Password string
+}
+
+type jadwals struct{
+  gorm.Model
+  Userid    interface{}
+  Kegiatan  string
+  Jam       string
+}
+
 type DBConfig struct {
   Host            string `env:"DB_HOST" required:"true"`
   Port						int 	 `env:"DB_PORT" required:"true"`
@@ -30,6 +44,7 @@ func (d DBConfig) makeDBInfo() string {
 
 func (d DBConfig) initDB() (*gorm.DB, error) {
 	db, errConn := gorm.Open("postgres", d.makeDBInfo())
+  defer db.AutoMigrate(&logins{}, &jadwals{})
 
   // migration =============
   driver, _ := postgres.WithInstance(db.DB(), &postgres.Config{})

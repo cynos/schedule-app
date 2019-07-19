@@ -15,7 +15,6 @@ func main() {
   cfg := Cfg{}
   cfg.init()
 
-  // setup server and initialize gin
   gin.SetMode(gin.ReleaseMode)
   r := gin.New()
 
@@ -24,11 +23,15 @@ func main() {
     r.Use(gin.Recovery())
   }
 
-  //global middleware
   r.Use(cors())
 
   // end-point list
-  r.POST("/action-schedule", actionHandlers(&cfg))
+  r.POST("/auth", hasLogged(), loginHandlers(&cfg))
+  r.POST("/action-schedule", authorized(&cfg), actionHandlers(&cfg))
+  r.POST("/logout", logoutHandlers())
+
+  //static routing
+  r.Static("/static", "../static")
 
   srv := &http.Server{
     Addr: cfg.HttpAddress,
