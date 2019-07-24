@@ -12,5 +12,3 @@
 *.out
 
 # user defines
-go.mod
-go.sum
