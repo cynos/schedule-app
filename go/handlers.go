@@ -349,7 +349,7 @@ func (j *jadwals) AfterUpdate(tx *gorm.DB) (err error) {
     const CONFIG_SMTP_HOST = "smtp.gmail.com"
     const CONFIG_SMTP_PORT = 587
     const CONFIG_EMAIL     = "cynomous@gmail.com"
-    const CONFIG_PASSWORD  = "lastchild001"
+    const CONFIG_PASSWORD  = ""
 
     sendMail := func(to []string, cc []string, subject, message string) error {
       body := "From: " + CONFIG_EMAIL + "\n" +
