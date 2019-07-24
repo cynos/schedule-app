@@ -25,13 +25,19 @@ func main() {
 
   r.Use(cors())
 
-  // end-point list
-  r.POST("/auth", hasLogged(), loginHandlers(&cfg))
-  r.POST("/action-schedule", authorized(&cfg), actionHandlers(&cfg))
-  r.POST("/logout", logoutHandlers())
-
   //static routing
   r.Static("/static", "../static")
+
+  // routing list
+  r.POST("/auth", hasLogged(), loginHandler(&cfg))
+  r.POST("/logout", logoutHandler())
+
+  v1 := r.Group("/v1")
+  v1.Use(authorized(&cfg))
+  {
+    v1.POST("/schedule", scheduleHandler(&cfg))
+    v1.POST("/contacts", contactsHandler(&cfg))
+  }
 
   srv := &http.Server{
     Addr: cfg.HttpAddress,

@@ -9,6 +9,7 @@ using module :
 - "github.com/jinzhu/gorm"
 - "github.com/jinzhu/gorm/dialects/postgres"
 - "github.com/jinzhu/configor"
+- "github.com/lib/pq"
 - "go.uber.org/zap"
 
 db name : db_schedule_app

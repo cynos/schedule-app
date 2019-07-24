@@ -5,12 +5,14 @@
     <title>schedult management</title>
     <link href="./assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="./assets/css/dataTables.min.css" rel="stylesheet">
+    <link href="./assets/css/select2.min.css" rel="stylesheet" />
+    <link href="./assets/css/select2-bootstrap.min.css" rel="stylesheet">
 
     <script src="./assets/js/jquery-3.3.1.min.js" charset="utf-8"></script>
     <script src="./assets/js/bootstrap.bundle.min.js" charset="utf-8"></script>
     <script src="./assets/js/dataTables.min.js" charset="utf-8"></script>
     <script src="./assets/js/js-cookies.js" charset="utf-8"></script>
-
+    <script src="./assets/js/select2.min.js"></script>
   </head>
   <body>
     <div class="container">
@@ -24,6 +26,7 @@
               <div class="row">
                 <div class="col">
                   <a href="#" class="btn btn-success" data-mode="tambah" data-toggle="modal", data-target="#modal">Tambah Jadwal</a>
+                  <a href="#" class="btn btn-info" data-toggle="modal" data-target="#modal-mycontact">kontak saya</a>
                   <a href="#" class="btn btn-danger" onclick="logout()">Logout</a>
                 </div>
                 <div class="w-100 my-2"></div>
@@ -88,13 +91,21 @@
                 </div>
                 <div class="form-group">
                   <div class="row">
-                    <div class="col">
+                    <div class="col-5">
                       <label>Tanggal</label>
                       <input name="tanggal" class="form-control" type="date" placeholder="Default input" id="f-tanggal" required>
                     </div>
-                    <div class="col">
-                      <label>Waktu</label>
-                      <input name="waktu" class="form-control" type="time" placeholder="Default input" id="f-waktu" required>
+                    <div class="col-7">
+                      <div class="row">
+                        <div class="col">
+                          <label>mulai</label>
+                          <input name="mulai" class="form-control" type="time" placeholder="Default input" id="f-mulai" required>
+                        </div>
+                        <div class="col">
+                          <label>selesai</label>
+                          <input name="selesai" class="form-control" type="time" placeholder="Default input" id="f-selesai" required>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -108,6 +119,89 @@
         </div>
       </div>
 
+      <!-- modal my contact -->
+      <div class="modal fade" id="modal-mycontact" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalLabel"></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <input name="id" hidden type="text" id="f-id">
+            <div class="modal-body">
+              <form class="form-group bg-light p-3 rounded">
+                <div class="row">
+                  <div class="col">
+                    <input name="firstname" class="form-control" type="text" placeholder="Firstname" id="f-tanggal" required>
+                  </div>
+                  <div class="col">
+                    <input name="lastname" class="form-control" type="text" placeholder="Lastname" id="f-mulai" required>
+                  </div>
+                  <div class="col">
+                    <input name="email" class="form-control" type="email" placeholder="Email" id="f-selesai" required>
+                  </div>
+                  <div class="col">
+                    <input name="phone" class="form-control" type="number" placeholder="Phone" id="f-selesai" required>
+                  </div>
+                  <div class="col">
+                    <button type="submit" class="btn btn-primary">Tambah</button>
+                  </div>
+                </div>
+              </form>
+              <table class="display table table-striped table" style="width:100%">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Opsi</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- modal kontak jadwal -->
+      <div class="modal fade" id="modal-schedulecontact" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <form>
+              <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <label for="labelSelectContact">Pilih Kontak</label>
+                <select id="labelSelectContact" class="select-contact custom-select" name="contact[]" multiple="multiple"></select>
+                <table id="table-selectContact" class="display table table-striped table" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Kontak</th>
+                      <th>Email</th>
+                      <th>Opsi</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Tambah</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
   <script type="text/javascript">
@@ -120,11 +214,11 @@
     })();
 
     function logout(){
-      Cookies.remove('login')
       $.post({
         url: base_url+"/logout",
         success: function(res){
           if (res) {
+            Cookies.remove('login')
             Cookies.remove('token')
             location.reload(true)
           }
@@ -132,12 +226,15 @@
       })
     }
 
+
     $(document).ready(function() {
+      $.fn.select2.defaults.set( "theme", "bootstrap" );
+
       var table = $('#table').DataTable( {
         "processing": true,
         "ajax": {
           "type": "POST",
-          "url": base_url+"/action-schedule",
+          "url": base_url+"/v1/schedule",
           "data": {method:"read"},
           "dataSrc": function (j) {
             var data = new Array(),
@@ -152,6 +249,7 @@
                 "Opsi" : `
                   <a href="#" class="btn btn-secondary btn-sm" data-mode="edit" data-toggle="modal" data-target="#modal" data-id="${j.data[i].ID}">Edit</a>
                   <a href="#" class="btn btn-secondary btn-sm" data-mode="hapus" data-toggle="modal" data-target="#modal-hapus" data-id="${j.data[i].ID}">Delete</a>
+                  <a href="#" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-schedulecontact" data-id="${j.data[i].ID}">contact</a>
                 `,
               })
             }
@@ -181,7 +279,7 @@
         form.on('submit', function(event){
           event.preventDefault()
           $.ajax({
-            "url": base_url+'/action-schedule',
+            "url": base_url+'/v1/schedule',
             'type': 'POST',
             'data': {method:'delete', id:id},
             'dataType': 'json',
@@ -203,14 +301,17 @@
 
         switch (mode) {
           case 'edit':
+            waktu = rowData.Waktu.replace(/\s/g,'').split('-')
             modal.find('#modalLabel').html('Edit Jadwal')
             modal.find('#f-id').val(btn.data('id'))
             modal.find('#f-kegiatan').val(rowData.Kegiatan)
-            modal.find('#f-waktu').val(rowData.Waktu)
+            modal.find('#f-mulai').val(waktu[0])
+            modal.find('#f-selesai').val(waktu[1])
             modal.find('#f-tanggal').val(rowData.Tanggal)
             submitModal('update')
             break;
           case 'tambah':
+            modal.find('#modalLabel').html('Tambah Jadwal')
             modal.find('#form-modal')[0].reset()
             submitModal('create')
             break;
@@ -225,7 +326,7 @@
           var data = new Object()
 
           data.Kegiatan = modal.find('#f-kegiatan').val()
-          data.Jam      = modal.find('#f-tanggal').val()+'|'+modal.find('#f-waktu').val()
+          data.Jam      = modal.find('#f-tanggal').val()+'|'+modal.find('#f-mulai').val()+' - '+modal.find('#f-selesai').val()
 
           switch (method) {
             case 'update':
@@ -238,7 +339,7 @@
           }
 
           $.ajax({
-            "url": base_url+'/action-schedule',
+            "url": base_url+'/v1/schedule',
             'type': 'POST',
             'data': data,
             'dataType': 'json',
@@ -253,6 +354,173 @@
         })
       }
 
+      var tableMycontact
+      $('#modal-mycontact').on('show.bs.modal', function(event){
+        form = $(this)
+        form.find('#modalLabel').html('Kontak Saya')
+
+        tableMycontact = form.find('table').DataTable({
+          "retrieve": true,
+          "processing": true,
+          "ajax": {
+            "type": "POST",
+            "url": base_url+"/v1/contacts",
+            "data": function() {
+              return {method:"read"}
+            },
+            "dataSrc": function(j) {
+              var data = new Array(),
+                  ctr  = 1;
+              for (var i = 0; i < j.data.length; i++) {
+                data.push({
+                  "idcontact" : j.data[i].ID,
+                  "No" : ctr++,
+                  "Name" : j.data[i].Firstname+' '+j.data[i].Lastname,
+                  "Email" : j.data[i].Email,
+                  "Phone" : j.data[i].Phone,
+                  "Opsi" : `
+                    <a href="#">X</a>
+                  `
+                })
+              }
+              return data
+            }
+          },
+          "columns" : [
+            { "data": "No" },
+            { "data": "Name" },
+            { "data": "Email" },
+            { "data": "Phone" },
+            { "data": "Opsi" },
+          ]
+        });
+      })
+      $('#modal-mycontact form').on('submit', function(e){
+        e.preventDefault()
+        form = $(this)
+        formdata = {method:'create'}
+        $.map($(this).serializeArray(), function(val, i){
+          formdata[val.name] = val.value
+        })
+        $.post({
+          url: base_url+'/v1/contacts',
+          data: formdata,
+          success: function(){
+            tableMycontact.ajax.reload()
+            form[0].reset()
+          }
+        })
+      })
+      $('#modal-mycontact table').on('click', 'a', function () {
+        row = tableMycontact.row($(this).parents('tr')).data();
+        $.post({
+          url: base_url+'/v1/contacts',
+          data: {method:'delete', idcontact:row.idcontact},
+          success: function(data){
+            if (data.response) {
+              tableMycontact.ajax.reload()
+            }
+          }
+        })
+      });
+
+      var tableSelectContact, idjadwal
+      $('#modal-schedulecontact').on('hidden.bs.modal', function(event){
+        $('.select-contact').val(null).trigger('change')
+      })
+      $('#modal-schedulecontact').on('shown.bs.modal', function(event){
+        modal  = $(this)
+        target = $(event.relatedTarget)
+
+        modal.find('#modalLabel').html('Kontak Jadwal')
+
+        idjadwal = target.data('id')
+        tableSelectContact = $('#table-selectContact').DataTable({
+          "searching": false,
+          "paging":   false,
+          "ordering": false,
+          "info":     false,
+          "retrieve": true,
+          "processing": true,
+          "ajax": {
+            "type": "POST",
+            "url": base_url+"/v1/schedule",
+            "data": function() {
+              return {method:"get-contact", idjadwal:idjadwal}
+            },
+            "dataSrc": function(j) {
+              var data = new Array(),
+                  ctr  = 1;
+              for (var i = 0; i < j.data.length; i++) {
+                data.push({
+                  "idcontact" : j.data[i].ID,
+                  "No" : ctr++,
+                  "Kontak" : j.data[i].Firstname+' '+j.data[i].Lastname,
+                  "Email" : j.data[i].Email,
+                  "Opsi" : `
+                    <a href="#">X</a>
+                  `
+                })
+              }
+              return data
+            }
+          },
+          "columns" : [
+            { "data": "No" },
+            { "data": "Kontak" },
+            { "data": "Email" },
+            { "data": "Opsi" },
+          ]
+        });
+        tableSelectContact.ajax.reload()
+
+        $('.select-contact').select2({
+          allowClear: true,
+          width: 'resolve',
+          ajax: {
+            url: base_url+'/v1/schedule',
+            data: function(){
+              return {method:'get-contact-options', idjadwal:idjadwal}
+            },
+            dataType: 'json',
+            type: "POST",
+            delay: 250,
+            processResults: function (data) {
+              data = $.map(data.data, function (obj) {
+                obj.id = obj.ID
+                obj.text = obj.Firstname+' '+obj.Lastname
+                return obj
+              })
+              return { results: data }
+            }
+          }
+        });
+      })
+      $('#modal-schedulecontact form').on('submit', function(e){
+        e.preventDefault()
+        formdata = $('.select-contact').val()
+        data = {method:'add-contact', idcontact:JSON.stringify(formdata), idjadwal:idjadwal}
+        $.post({
+          url: base_url+'/v1/schedule',
+          data: data,
+          success: function(res){
+            $('.select-contact').val(null).trigger('change')
+            tableSelectContact.ajax.reload()
+          }
+        })
+      })
+      $('#modal-schedulecontact table').on('click', 'a', function () {
+        row = tableSelectContact.row($(this).parents('tr')).data();
+        $.post({
+          url: base_url+'/v1/schedule',
+          data: {method:'remove-contact', idcontact:row.idcontact, idjadwal:idjadwal},
+          success: function(data){
+            if (data.response) {
+              tableSelectContact.ajax.reload()
+            }
+          }
+        })
+      })
     });
   </script>
 </html>

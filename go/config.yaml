@@ -1,6 +1,6 @@
 httpaddress: :8080
 timezone: Asia/Jakarta
-signaturekey: jwttoken
+signaturekey: lumoshive
 debug: true
 
 dbconfig:
@@ -9,5 +9,7 @@ dbconfig:
   name: db_schedule_app
   user: postgres
   password: 123456
-  applicationname: latihan
+  applicationname: schedule_app
   logging: true
+  maxopenconn: 50
+  maxidleconn: 10

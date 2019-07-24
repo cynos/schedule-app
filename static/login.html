@@ -47,8 +47,12 @@
           data: {data:$(this).serialize()},
           dataType: 'json',
           success: function(res){
-            location.reload(true)
-            console.log(res);
+            if (res.response) {
+              alert(res.msg)
+              location.reload(true)
+            } else {
+              alert(res.msg)
+            }
           },
           error: function(res){
             console.log(res);
