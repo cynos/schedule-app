@@ -21,6 +21,7 @@
           <div class="card my-5">
             <div class="card-header">
               Jadwal Kegiatan
+              <a href="#" class="btn btn-info float-right" onclick="redirectToTimerapp()">Timer App</a>
             </div>
             <div class="card-body">
               <div class="row">
@@ -212,6 +213,10 @@
         window.location.href = base_url+"/static/login.html"
       }
     })();
+
+    function redirectToTimerapp() {
+      window.location.href = base_url+"/static/timerapp.html"
+    }
 
     function logout(){
       $.post({

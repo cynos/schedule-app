@@ -10,7 +10,6 @@ CREATE TABLE public.jadwals
     contact_list integer[],
     CONSTRAINT jadwals_pkey PRIMARY KEY (id)
 );
-
 ALTER TABLE public.jadwals
     OWNER to postgres;
 
@@ -24,7 +23,6 @@ CREATE TABLE public.logins
     password varchar(25),
     CONSTRAINT logins_pkey PRIMARY KEY (id)
 );
-
 ALTER TABLE public.logins
     OWNER to postgres;
 
@@ -41,6 +39,19 @@ CREATE TABLE public.contacts
     userid integer NOT NULL,
     CONSTRAINT contacts_pkey PRIMARY KEY (id)
 );
-
 ALTER TABLE public.contacts
+    OWNER to postgres;
+
+CREATE TABLE public.timers
+(
+    id integer NOT NULL,
+    created_at timestamp with time zone,
+    updated_at timestamp with time zone,
+    deleted_at timestamp with time zone,
+    userid integer,
+    "time" varchar(25),
+    title varchar(100),
+    CONSTRAINT timers_pkey PRIMARY KEY (id)
+);
+ALTER TABLE public.timers
     OWNER to postgres;

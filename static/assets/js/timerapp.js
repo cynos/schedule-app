@@ -1,3 +1,11 @@
+var base_url = "http://localhost:8080";
+
+(function(){
+  if (Cookies.get("login") == null) {
+    window.location.href = base_url+"/static/login.html"
+  }
+})()
+
 Vue.component('timer', {
   data: function() {
     return {
@@ -66,16 +74,14 @@ Vue.component('timer', {
         title: this.recordTitle,
         method: 'add'
       }
-      var request = $.post({
-        url: this.baseUrl+'/v1/timer',
+      $.post({
+        url: base_url+'/v1/timer',
         data: data,
         success: function(res){
-          return res
+          console.log(res);
         }
       })
-      if (request.responseJSON.response) {
-        this.disabled = true
-      }
+      this.disabled = true
     }
   },
   template: `
@@ -120,7 +126,6 @@ Vue.component('custom-table', {
   template: `
     <div class="p-5">
       <button v-on:click="addTimer" class="btn btn-success">add</button>
-      <button class="btn btn-secondary">history</button>
       <table class="table table-borderless my-3">
         <tbody>
           <tr v-for="(v, i) in timer">
