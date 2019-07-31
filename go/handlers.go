@@ -331,6 +331,35 @@ func contactsHandler(cfg *Cfg) gin.HandlerFunc {
   }
 }
 
+func timerHandler(cfg *Cfg) gin.HandlerFunc {
+  return func(c *gin.Context) {
+    var (
+      db       = cfg.DBInstance
+      UserData = c.MustGet("UserData").(map[string]interface{})
+      method   = c.PostForm("method")
+    )
+
+    add := func() {
+      var data = timer{
+        Userid: UserData["id"],
+        Time:   c.DefaultPostForm("time", ""),
+        Title:  c.DefaultPostForm("title", ""),
+      }
+
+      db.Create(&data)
+      c.JSON(200, gin.H{
+        "response": true,
+        "msg":   "successfully insert data",
+      })
+    }
+
+    switch method {
+      case "add": add()
+      default: methodNotFound(c)
+    }
+  }
+}
+
 // hooks gorm ================
 func (j *jadwals) AfterUpdate(tx *gorm.DB) (err error) {
   if j.Confirmed {

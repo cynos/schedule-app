@@ -11,6 +11,13 @@ import (
   "github.com/lib/pq"
 )
 
+type timer struct{
+  gorm.Model
+  Userid interface{} `gorm:"type:integer"`
+  Time   string `gorm:"type:varchar(25)"`
+  Title  string `gorm:"type:varchar(100)"`
+}
+
 type contacts struct{
   gorm.Model
   Userid    interface{} `gorm:"type:integer"`
@@ -59,7 +66,7 @@ func (d DBConfig) initDB() (*gorm.DB, error) {
     return nil, err
   }
 
-  defer db.AutoMigrate(&logins{}, &jadwals{}, &contacts{})
+  defer db.AutoMigrate(&logins{}, &jadwals{}, &contacts{}, &timer{})
 
   // migration =============
   driver, _ := postgres.WithInstance(db.DB(), &postgres.Config{})

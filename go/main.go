@@ -37,6 +37,7 @@ func main() {
   {
     v1.POST("/schedule", scheduleHandler(&cfg))
     v1.POST("/contacts", contactsHandler(&cfg))
+    v1.POST("/timer", timerHandler(&cfg))
   }
 
   srv := &http.Server{
