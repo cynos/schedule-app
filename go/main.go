@@ -25,6 +25,11 @@ func main() {
 
   r.Use(cors())
 
+  r.GET("/", func(c *gin.Context) {
+    c.Request.URL.Path = "/static"
+    r.HandleContext(c)
+  })
+
   //static routing
   r.Static("/static", "../static")
 

@@ -112,7 +112,29 @@ Vue.component('timer', {
   `
 })
 
-Vue.component('custom-table', {
+Vue.component('layout', {
+  template: `
+    <div class="p-5">
+      <a href="index.html" class="btn btn-info float-right">back</a>
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Home</a>
+          <a class="nav-item nav-link" id="nav-history-tab" data-toggle="tab" href="#nav-history" role="tab" aria-controls="nav-history" aria-selected="false">History</a>
+        </div>
+      </nav>
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+          <tab-one></tab-one>
+        </div>
+        <div class="tab-pane fade" id="nav-history" role="tabpanel" aria-labelledby="nav-history-tab">
+          <tab-two></tab-two>
+        </div>
+      </div>
+    </div>
+  `
+})
+
+Vue.component('tab-one', {
   data: function() {
     return {
       timer: ['']
@@ -124,14 +146,56 @@ Vue.component('custom-table', {
     }
   },
   template: `
-    <div class="p-5">
+    <div class="p-2">
       <button v-on:click="addTimer" class="btn btn-success">add</button>
-      <table class="table table-borderless my-3">
+      <table id="table-timer" class="table table-borderless my-3">
         <tbody>
           <tr v-for="(v, i) in timer">
             <td><timer v-on:removeRecord="timer.splice(i, 1)"></timer></td>
           </tr>
         </tbody>
+      </table>
+    </div>
+  `
+})
+
+Vue.component('tab-two', {
+  mounted: function() {
+    $('#table-history').DataTable({
+      "processing": true,
+      "ajax": {
+        "type": "POST",
+        "url": base_url+"/v1/timer",
+        "data": {method:"get"},
+        "dataSrc": function (src) {
+          var data = new Array(), ctr = 1;
+          for (var i = 0; i < src.data.length; i++) {
+            data.push({
+              "No" : ctr++,
+              "Title" : src.data[i].Title,
+              "Time" : src.data[i].Time
+            })
+          }
+          return data
+        }
+      },
+      "columns" : [
+        { "data": "No", "width": "20%" },
+        { "data": "Title" },
+        { "data": "Time" }
+      ]
+    })
+  },
+  template: `
+    <div class="p-3">
+      <table id="table-history" class="display table table-striped table" style="width:100%">
+        <thead>
+            <tr>
+              <th>No</th>
+              <th>Title</th>
+              <th>Time</th>
+            </tr>
+        </thead>
       </table>
     </div>
   `

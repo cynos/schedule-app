@@ -339,6 +339,15 @@ func timerHandler(cfg *Cfg) gin.HandlerFunc {
       method   = c.PostForm("method")
     )
 
+    get := func() {
+      var data []timer
+      db.Where("userid = ?", UserData["id"]).Find(&data)
+      c.JSON(200, gin.H{
+        "response": true,
+        "data": data,
+      })
+    }
+
     add := func() {
       var data = timer{
         Userid: UserData["id"],
@@ -355,6 +364,7 @@ func timerHandler(cfg *Cfg) gin.HandlerFunc {
 
     switch method {
       case "add": add()
+      case "get": get()
       default: methodNotFound(c)
     }
   }
